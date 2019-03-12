@@ -36,13 +36,24 @@ module.exports = {
   plugins: [
   ],
 
+  
   /*
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://bootstrap-vue.js.org/docs/
-    'bootstrap-vue/nuxt',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    'bootstrap-vue/nuxt'
   ],
+
+  
+  /*
+  ** Axios Module Configuration
+  */
+  axios: {
+    // See https://github.com/nuxt-community/axios-module#options
+    baseURL: "http://127.0.0.1:8000/api"
+  },
 
   /*
   ** Build configuration
@@ -51,6 +62,7 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+    extractCSS: true,
     extend(config, ctx) {
       
     }
