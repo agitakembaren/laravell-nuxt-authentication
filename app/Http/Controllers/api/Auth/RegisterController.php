@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\api\Auth;
 
 use App\Models\User;
+use Tymon\JWTAuth\JWTAuth;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,21 +25,46 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
+
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '';
+
+    protected $auth;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(JWTAuth $auth)
     {
-        $this->middleware('guest');
+        $this->auth = $auth;
+    }
+
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+        if(!$validator->fails()) {
+            $user = $this->create($request->all());
+
+            $token = $this->auth->attempt($request->only('email','password'));
+
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+                'token' => $token
+
+            ], 200);
+        }
+
+        return response ()->json([
+            'success' => false,
+            'errors' => $validator->errors()
+        ]);
     }
 
     /**
@@ -51,7 +78,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:6'],
         ]);
     }
 
