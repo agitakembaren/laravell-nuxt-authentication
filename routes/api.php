@@ -17,3 +17,8 @@ Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function(
     Route::post('/register', 'api\Auth\RegisterController@register');
     Route::post('/login', 'api\Auth\LoginController@login');
 });
+
+Route::group(['middleware' => 'jwt.auth'], function(){
+    Route::get('/me','api\MeController@index');
+    Route::get('/auth/logout','api\MeController@logout');
+});
