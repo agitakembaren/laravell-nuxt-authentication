@@ -24,6 +24,12 @@ module.exports = {
   */
   loading: { color: '#fff' },
 
+  router: {
+    middleware: [
+    'clearValidationErrors'
+    ]
+    },
+
   /*
   ** Global CSS
   */
@@ -34,8 +40,32 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    './plugins/mixins/validation',
+    './plugins/axios'
   ],
 
+  auth: {
+    strategies: {
+    local: {
+    endpoints: {
+    login: {
+    url:'auth/login', method: 'post', propertyName: 'token'
+    },
+    user : {
+    url: 'me', method: 'get', propertyName: 'data'
+    },
+    logout: {
+    url:'logout', 
+    method: 'get'
+    }
+    }
+    }
+    },
+    redirect: {
+    login: '/auth/login',
+    home: '/'
+    }
+    },
   
   /*
   ** Nuxt.js modules

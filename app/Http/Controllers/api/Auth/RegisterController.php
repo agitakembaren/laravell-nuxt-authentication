@@ -57,15 +57,15 @@ class RegisterController extends Controller
                 'success' => true,
                 'data' => $user,
                 'token' => $token
-
             ], 200);
         }
 
-        return response ()->json([
+        return response()->json([
             'success' => false,
             'errors' => $validator->errors()
-        ],422);
-    }
+            ], 422);
+        }
+    
 
     /**
      * Get a validator for an incoming registration request.
