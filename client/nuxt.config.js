@@ -41,6 +41,7 @@ module.exports = {
   */
   plugins: [
     './plugins/mixins/validation',
+    './plugins/mixins/user',
     './plugins/axios'
   ],
 
@@ -55,7 +56,7 @@ module.exports = {
     url: 'me', method: 'get', propertyName: 'data'
     },
     logout: {
-    url:'logout', 
+    url:'auth/logout', 
     method: 'get'
     }
     }
@@ -64,8 +65,12 @@ module.exports = {
     redirect: {
     login: '/auth/login',
     home: '/'
-    }
     },
+    plugins: [
+      './plugins/auth'
+    ]
+    },
+
   
   /*
   ** Nuxt.js modules
